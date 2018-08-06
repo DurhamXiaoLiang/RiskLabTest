@@ -1,0 +1,397 @@
+<html>
+<head>
+</head>
+<style>
+.content1 {
+    color: white;
+    font-family: Consolas;
+    font-size: 18px;
+}
+
+.content2 {
+    color: #643265;
+    font-family: Consolas;
+    font-size: 18px;
+}
+
+
+.content3{
+    width : 100%;
+    font-family:Consolas;
+    height: 100px;
+
+}
+
+</style>
+
+
+
+<script>
+    function getURLParameter(name) {
+        country = decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+        if (country.trim() == "TaiWan,China"){
+            country = "China"
+        }
+     return country
+    }
+
+</script>
+
+<div style ="color: #643265;font-family: 'Arial Black';font-size: 20px ; ">
+    <script>
+       var country = getURLParameter("cid")
+       sentence_show ='Macro Economic Data: ' + country
+//        document.write('<font color="blue">'+sentence_show+'</font>')
+       document.write(sentence_show)
+    </script>
+</div>
+
+Year:<select id = 'year' onchange="state_change();" style = "width: 100px;"></select> Month: <select id = 'month' onchange = "state_change()"style="width: 100px"></select> Content: <select onchange = "state_change()" id = 'content' style="width: 100px"></select>
+<script>
+    var object_time = document.getElementById('year');
+    yy = '1940';
+
+    var current_time = new Date();
+    var year = current_time.getFullYear();
+    for (var i = year;i>yy;i--){
+         object_time.options.add(new Option(i,"value"));
+    }
+
+
+</script>
+<!--month select-->
+<script>
+    var object_time = document.getElementById('month');
+    var current_time = new Date();
+    var month = current_time.getMonth();
+    for (var i = 1;i<13;i++){
+
+        if (i<10){
+          var i = ("0" + i).slice(-2);
+        }
+
+
+
+        object_time.options.add(new Option(i,"value"));
+    }
+    document.getElementById("month")[month].selected=true;
+
+</script>
+
+<!--content select-->
+<script>
+    var object_content = document.getElementById('content');
+
+
+    object_content.options.add(new Option('Overall',"forecast"));
+    object_content.options.add(new Option('Maturities',"maturities"));
+
+
+
+//    for (var i = 1;i<13;i++){
+//        object_time.options.add(new Option(i,"value"));
+//    }
+    document.getElementById("month")[month].selected=true;
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table  border = "0" width="100%" height="100";>
+   <tr style = "background-color: #643265">
+    <th class = content1> Content</th>
+       <th class = content1> Link</th>
+   </tr>
+
+
+    <tr style="background-color:#DFCEE0" >
+        <td class="content2"> National House Index
+        <td id="House_row"><a id ='House_data' style="font-family: Consolas;color: #643265; " download> Swap Data Download </a>
+        <br>
+        <a id ='House_figure'  style="font-family: Consolas;color: #643265" download> Swap Figure Download</a>
+        <br>
+        <a id = 'House_forecast' style="font-family: Consolas;color: #643265" download> Forecast Figure Download</a>
+    </td>
+    </tr>
+
+
+    <tr style = "background-color: #643265">
+        <td class="content1"> Industrial Production
+        <td id="IndPro_row"> <a id ='Industry_data' style="font-family: Consolas;color: white" download>Swap Data Download</a>
+        <br>
+        <a id = 'Industry_figure' style="font-family: Consolas;color: white" download>Swap Figure Download</a>
+        <br>
+        <a id ='Industry_forecast' style="font-family: Consolas;color: white" download> Forecast Figure Download</a>
+    </td>
+    </tr>
+
+    <tr style="background-color:#DFCEE0">
+        <td class="content2"> Money Supply
+        <td id = 'MoneySupply_row'> <a id='MoneySupply_data'  style="font-family: Consolas;color: #643265" download>Swap Data Download</a>
+        <br>
+        <a id ='MoneySupply_figure' style="font-family: Consolas;color: #643265" download>Swap Figure Download</a>
+        <br>
+        <a id = 'MoneySupply_forecast' style="font-family: Consolas;color: #643265" download>Forecast Figure Download</a>
+    </td>
+    </tr>
+
+
+    <!--<tr style="background-color: #643265">-->
+        <!--<td class="content1"> Inflation-->
+        <!--<td id="Inflation_row"> <a id='Inflation_data'  style="font-family: Consolas;color: white" download>Swap Data Download </a>-->
+        <!--<br>-->
+        <!--<a id = 'Inflation_figure' style="font-family: Consolas;color: white" download>Swap Figure Download</a>-->
+        <!--<br>-->
+        <!--<a id ='Inflation_forecast' style="font-family: Consolas;color: white" download>Forecast Figure Download</a>-->
+        <!--</td>-->
+    <!--</tr>-->
+
+
+    <!--<tr style="background-color:#DFCEE0">-->
+        <!--<td class="content2" > Short Interest Rate-->
+        <!--<td id="Interest_row"> <a id='Interest_data'  style="font-family: Consolas;color: #643265" download>Swap Data Download </a>-->
+        <!--<br>-->
+        <!--<a id = 'Interest_figure' style="font-family: Consolas;color: #643265" download>Swap Figure Download</a>-->
+        <!--<br>-->
+        <!--<a id = 'Interest_forecast' style = "font-family: Consolas;color: #643265" download>Forecast Figure Download </a>-->
+        <!--</td>-->
+    <!--</tr>-->
+
+
+
+</table>
+
+
+
+
+
+
+
+
+<script>
+    function state_change(){
+        var country = getURLParameter("cid");
+
+        var yearBox = document.getElementById('year');
+        var yearValue = yearBox.options[yearBox.selectedIndex].text;
+
+        var monthBox = document.getElementById('month');
+        var monthValue = monthBox.options[monthBox.selectedIndex].text;
+
+
+        var contentBox = document.getElementById('content');
+        var contentValue = contentBox.options[contentBox.selectedIndex].value;
+
+
+        var comb = yearValue+'_'+monthValue;
+
+
+
+
+        if (contentValue.trim()=="forecast") {
+            document.getElementById('House_row').innerHTML = '<a id =\'House_data\' style="font-family: Consolas;color: #643265; " download> Swap Data Download </a>\n' +
+                '        <br>\n' +
+                '        <a id =\'House_figure\'  style="font-family: Consolas;color: #643265" download> Swap Figure Download</a>\n' +
+                '        <br>\n' +
+                '        <a id = \'House_forecast\' style="font-family: Consolas;color: #643265" download> Forecast Figure Download</a>'
+
+            document.getElementById('IndPro_row').innerHTML = '<a id =\'Industry_data\' style="font-family: Consolas;color: white; " download> Swap Data Download </a>\n' +
+                '        <br>\n' +
+                '        <a id =\'Industry_figure\'  style="font-family: Consolas;color: white" download> Swap Figure Download</a>\n' +
+                '        <br>\n' +
+                '        <a id = \'Industry_forecast\' style="font-family: Consolas;color: white" download> Forecast Figure Download</a>'
+
+            document.getElementById('MoneySupply_row').innerHTML = '<a id =\'MoneySupply_data\' style="font-family: Consolas;color: #643265; " download> Swap Data Download </a>\n' +
+                '        <br>\n' +
+                '        <a id =\'MoneySupply_figure\'  style="font-family: Consolas;color: #643265" download> Swap Figure Download</a>\n' +
+                '        <br>\n' +
+                '        <a id = \'MoneySupply_forecast\' style="font-family: Consolas;color: #643265" download> Forecast Figure Download</a>'
+
+//            document.getElementById('Inflation_row').innerHTML = '<a id =\'Inflation_data\' style="font-family: Consolas;color: white; " download> Swap Data Download </a>\n' +
+//                '        <br>\n' +
+//                '        <a id =\'Inflation_figure\'  style="font-family: Consolas;color: white" download> Swap Figure Download</a>\n' +
+//                '        <br>\n' +
+//                '        <a id = \'Inflation_forecast\' style="font-family: Consolas;color: white" download> Forecast Figure Download</a>'
+//
+//            document.getElementById('Interest_row').innerHTML = '<a id =\'Interest_data\' style="font-family: Consolas;color: #643265; " download> Swap Data Download </a>\n' +
+//                '        <br>\n' +
+//                '        <a id =\'Interest_figure\'  style="font-family: Consolas;color: #643265" download> Swap Figure Download</a>\n' +
+//                '        <br>\n' +
+//                '        <a id = \'Interest_forecast\' style="font-family: Consolas;color: #643265" download> Forecast Figure Download</a>'
+//
+
+
+
+            var  House_data = country+'/House_Index/'+country+'_HouseIndex_swap.xlsx';
+            var  House_figure = country+'/House_Index/'+country+'_HouseIndex_swap.pdf';
+            var House_forecast = country+'/House_Index/FanPlot_figure/'+country+'_'+'HouseIndex_'+comb+'_forecast.pdf';
+            document.getElementById('House_data').href =House_data;
+            document.getElementById('House_figure').href= House_figure;
+            document.getElementById('House_forecast').href = House_forecast;
+
+
+            var  Industry_data = country+'/Industrial_Production/'+country+'_IndustrialProduction_swap.xlsx';
+            var  Industry_figure = country+'/Industrial_Production/'+country+'_IndustrialProduction_swap.pdf';
+            var  Industry_forecast = country+'/Industrial_Production/FanPlot_figure/'+country+'_'+'IndustrialProduction_'+comb+'_forecast.pdf';
+            document.getElementById('Industry_data').href = Industry_data;
+            document.getElementById('Industry_figure').href= Industry_figure;
+            document.getElementById('Industry_forecast').href= Industry_forecast;
+
+            var  MoneySupply_data = country+'/Money_Supply/'+country+'_MoneySupply_swap.xlsx';
+            var  MoneySupply_figure = country+'/Money_Supply/'+country+'_MoneySupply_swap.pdf';
+            var  MoneySupply_forecast = country+'/Money_Supply/FanPlot_figure/'+country+'_'+'MoneySupply_'+comb+'_forecast.pdf';
+            document.getElementById('MoneySupply_data').href = MoneySupply_data;
+            document.getElementById('MoneySupply_figure').href= MoneySupply_figure;
+            document.getElementById('MoneySupply_forecast').href= MoneySupply_forecast;
+//
+//            var  Inflation_data = country+'/Inflation/'+country+'_Inflation_swap.xlsx';
+//            var  Inflation_figure = country+'/Inflation/'+country+'_Inflation_swap.pdf';
+//            var  Inflation_forecast = country+'/Inflation/FanPlot_figure/'+country+'_'+'Inflation_'+comb+'_forecast.pdf';
+//            document.getElementById('Inflation_data').href = Inflation_data;
+//            document.getElementById('Inflation_figure').href= Inflation_figure;
+//            document.getElementById('Inflation_forecast').href= Inflation_forecast;
+//
+//            var  Interest_data = country+'/Interest/'+country+'_Interest_swap.xlsx';
+//            var  Interest_figure = country+'/Interest/'+country+'_Interest_swap.pdf';
+//            var  Interest_forecast = country+'/Interest/FanPlot_figure/'+country+'_'+'Interest_'+comb+'_forecast.pdf';
+//            document.getElementById('Interest_data').href = Interest_data;
+//            document.getElementById('Interest_figure').href = Interest_figure;
+//            document.getElementById('Interest_forecast').href = Interest_forecast;
+
+        }
+
+        if (contentValue.trim() == "maturities"){
+//            Change the format of html
+            document.getElementById('House_row').innerHTML = '<a id =\'House_data\' style="font-family: Consolas;color: #643265; " download>Excel Download</a>\n' +
+                '<br>\n' +
+                '<a id =\'House_figure\'  style="font-family: Consolas;color: #643265" download> Figure Download</a>\n'
+
+            document.getElementById('IndPro_row').innerHTML = '<a id =\'Industry_data\' style="font-family: Consolas;color: white; " download>Excel Download</a>\n' +
+                '<br>\n' +
+                '<a id =\'Industry_figure\'  style="font-family: Consolas;color: white" download> Figure Download</a>\n'
+
+            document.getElementById('MoneySupply_row').innerHTML = '<a id =\'MoneySupply_data\' style="font-family: Consolas;color: #643265; " download>Excel Download</a>\n' +
+                '<br>\n' +
+                '<a id =\'MoneySupply_figure\'  style="font-family: Consolas;color: #643265" download> Figure Download</a>\n'
+
+//            document.getElementById('Inflation_row').innerHTML = '<a id =\'Inflation_data\' style="font-family: Consolas;color: white; " download>Excel Download</a>\n' +
+//                '<br>\n' +
+//                '<a id =\'Inflation_figure\'  style="font-family: Consolas;color: white" download> Figure Download</a>\n'
+//            document.getElementById('Interest_row').innerHTML = '<a id =\'Interest_data\' style="font-family: Consolas;color: #643265; " download>Excel Download</a>\n' +
+//                '<br>\n' +
+//                '<a id =\'Interest_figure\'  style="font-family: Consolas;color: #643265" download> Figure Download</a>\n'
+
+            var House_data = country + '/House_Index/FanPlot_sheet/' + country + '_' + 'HouseIndex_' + comb + '_pdf.xlsx';
+            var House_figure = country + '/House_Index/Density_Plots/' + country + '_' + 'HouseIndex_' + comb + '_maturity.pdf';
+            document.getElementById('House_data').href = House_data;
+            document.getElementById('House_figure').href = House_figure;
+
+
+            var Industry_data = country + '/Industrial_Production/FanPlot_sheet/' + country + '_' + 'IndustrialProduction_' + comb + '_pdf.xlsx';
+            var Industry_figure = country + '/Industrial_Production/Density_Plots/' + country + '_' + 'IndustrialProduction_' + comb + '_maturity.pdf';
+            document.getElementById('Industry_data').href = Industry_data;
+            document.getElementById('Industry_figure').href = Industry_figure;
+
+            var MoneySupply_data = country + '/Money_Supply/FanPlot_sheet/' + country + '_' + 'MoneySupply_' + comb + '_pdf.xlsx';
+            var MoneySupply_figure = country + '/Money_Supply/Density_Plots/' + country + '_' + 'MoneySupply_' + comb + '_maturity.pdf';
+            document.getElementById('MoneySupply_data').href = MoneySupply_data;
+            document.getElementById('MoneySupply_figure').href = MoneySupply_figure;
+//
+//            var Inflation_data = country + '/Inflation/FanPlot_sheet/' + country + '_' + 'Inflation_' + comb + '_pdf.xlsx';
+//            var Inflation_figure = country + '/Inflation/Density_Plots/' + country + '_' + 'Inflation_' + comb + '_maturity.pdf';
+//            document.getElementById('Inflation_data').href = Inflation_data;
+//            document.getElementById('Inflation_figure').href = Inflation_figure;
+//
+//            var Interest_data = country + '/Interest/FanPlot_sheet/' + country + '_' + 'Interest_' + comb + '_pdf.xlsx';
+//            var Interest_figure = country + '/Interest/Density_Plots/' + country + '_' + 'Interest_' + comb + '_maturity.pdf';
+//            document.getElementById('Interest_data').href = Interest_data;
+//            document.getElementById('Interest_figure').href = Interest_figure;
+        }
+
+
+
+
+
+    }
+</script>
+
+
+
+<!--for the first page datadesign-->
+<script>
+    //    country
+    var country = getURLParameter("cid");
+    //    year
+    var year_select = document.getElementById('year');
+    var year_index = year_select.selectedIndex;
+    var yearValue= year_select.options[year_index].text;
+    //    month
+    var month_select = document.getElementById('month');
+    var month_index = month_select.selectedIndex;
+    var monthValue= month_select.options[month_index].text;
+    //    content
+    var contentBox = document.getElementById('content');
+    var contentValue = contentBox.options[contentBox.selectedIndex].value;
+
+
+
+
+
+    var comb = yearValue+'_'+monthValue;
+
+    var  House_data = country+'/House_Index/'+country+'_HouseIndex_swap.xlsx';
+    var  House_figure = country+'/House_Index/'+country+'_HouseIndex_swap.pdf';
+    var House_forecast = country+'/House_Index/FanPlot_figure/'+country+'_'+'HouseIndex_'+comb+'_forecast.png';
+    document.getElementById('House_data').href =House_data;
+    document.getElementById('House_figure').href= House_figure;
+    document.getElementById('House_forecast').href = House_forecast;
+
+
+    var  Industry_data = country+'/Industrial_Production/'+country+'_IndustrialProduction_swap.xlsx';
+    var  Industry_figure = country+'/Industrial_Production/'+country+'_IndustrialProduction_swap.pdf';
+    var  Industry_forecast = country+'/Industrial_Production/FanPlot_figure/'+country+'_'+'IndustrialProduction_'+comb+'_forecast.pdf';
+    document.getElementById('Industry_data').href = Industry_data;
+    document.getElementById('Industry_figure').href= Industry_figure;
+    document.getElementById('Industry_forecast').href= Industry_forecast;
+
+    var  MoneySupply_data = country+'/Money_Supply/'+country+'_MoneySupply_swap.xlsx';
+    var  MoneySupply_figure = country+'/Money_Supply/'+country+'_MoneySupply_swap.pdf';
+    var  MoneySupply_forecast = country+'/Money_Supply/forecast/'+country+'_'+'MoneySupply_'+comb+'_forecast.png';
+    document.getElementById('MoneySupply_data').href = MoneySupply_data;
+    document.getElementById('MoneySupply_figure').href= MoneySupply_figure;
+    document.getElementById('MoneySupply_forecast').href= MoneySupply_forecast;
+//
+//    var  Inflation_data = country+'/Inflation/'+country+'_Inflation_swap.xlsx';
+//    var  Inflation_figure = country+'/Inflation/'+country+'_Inflation_swap.pdf';
+//    var  Inflation_forecast = country+'/Inflation/forecast/'+country+'_'+'Inflation_'+comb+'_forecast.png';
+//    document.getElementById('Inflation_data').href = Inflation_data;
+//    document.getElementById('Inflation_figure').href= Inflation_figure;
+//    document.getElementById('Inflation_forecast').href= Inflation_forecast;
+//
+//    var  Interest_data = country+'/Interest/'+country+'_Interest_swap.xlsx';
+//    var  Interest_figure = country+'/Interest/'+country+'_Interest_swap.pdf';
+//    var  Interest_forecast = country+'/Interest/FanPlot_figure/'+country+'_'+'Interest_'+comb+'_forecast.png';
+//    document.getElementById('Interest_data').href = Interest_data;
+//    document.getElementById('Interest_figure').href = Interest_figure;
+//    document.getElementById('Interest_forecast').href = Interest_forecast;
+</script>
+
+<div class=content3>
+
+</div>
+
+
+</body>
+</html>
